@@ -15,6 +15,7 @@
  */
 
 
+#include <core/semaphore.h>
 #include <core/thread.h>
 #include <core/partition.h>
 #include <types.h>

@@ -519,7 +519,7 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
             printf ("State             : %d\n", pok_threads[res].state);
             printf ("Deadline          : %d\n", pok_threads[res].deadline);
             printf ("Partition         : %d\n", pok_threads[res].partition);
-            printf ("Wakeup_time         : %d\n", pok_threads[res].wakeup_time);
+            printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
          mindeadline = pok_threads[res].deadline;
          mintno = res;
       }      

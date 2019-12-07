@@ -45,11 +45,11 @@
 //the size of each slot
 #define POK_CONFIG_SCHEDULING_SLOTS                    \
    {                                                   \
-      600000, 600000, 600000, 600000 \
+      6000000, 6000000, 6000000, 6000000 \
    }
 
 //time when scheduling slots are repeated
-#define POK_CONFIG_SCHEDULING_MAJOR_FRAME 2400000
+#define POK_CONFIG_SCHEDULING_MAJOR_FRAME 24000000
 //specified which partition is scheduling at which slot
 #define POK_CONFIG_SCHEDULING_SLOTS_ALLOCATION \
    {                                           \
@@ -59,7 +59,7 @@
 
 #define POK_NEEDS_THREAD_SUSPEND 1
 #define POK_NEEDS_THREAD_SLEEP 1
-#define POK_NEEDS_DEBUG 1
+
 
 #define POK_CONFIG_PARTITIONS_NTHREADS \
    {                                   \
