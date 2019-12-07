@@ -27,12 +27,14 @@
 #define POK_NEEDS_CONSOLE 1
 #define POK_NEEDS_LOCKOBJECTS 1
 
+#define POK_NEEDS_FUNCTION_TIME_GET 1
 //TODO add a marco to enable edf
 #define POK_NEEDS_SCHED_EDF 1
+//#define POK_NEEDS_SCHED_FIFO 1
 
 //TODO setup scheduler of wach partition
 #define POK_CONFIG_PARTITIONS_SCHEDULER {POK_SCHED_EDF,POK_SCHED_EDF}
-
+//#define POK_CONFIG_PARTITIONS_SCHEDULER {POK_SCHED_FIFO,POK_SCHED_FIFO}
 
 #define POK_CONFIG_NB_THREADS 7
 // the num of lock objects for each partition

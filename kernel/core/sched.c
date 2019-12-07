@@ -498,13 +498,16 @@ uint32_t pok_sched_part_rr(const uint32_t index_low, const uint32_t index_high, 
    return res;
 }
 
+
+#ifdef POK_NEEDS_SCHED_EDF
 //TODO
 //uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high, const uint32_t __attribute__((unused)) prev_thread, const uint32_t current_thread)
+
 uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high, const uint32_t  prev_thread, const uint32_t current_thread)
 {
    uint32_t res;
    res = index_low;
-   printf("edf is called, POK_STATE_RUNNABLE=%d\n",POK_STATE_RUNNABLE);
+   //printf("edf is called, POK_STATE_RUNNABLE=%d\n",POK_STATE_RUNNABLE);
    uint64_t mindeadline = 1 << 30;
    uint32_t mintno = current_thread;   
 
@@ -514,12 +517,12 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
       printf("thread %d ddl is %d\n",res,pok_threads[res].deadline);
       if (res!=IDLE_THREAD && pok_threads[res].deadline < mindeadline && pok_threads[res].state == POK_STATE_RUNNABLE)
       {
-            printf ("Current thread    : %d\n", res);
-            printf ("Period            : %d\n", pok_threads[res].period);
-            printf ("State             : %d\n", pok_threads[res].state);
-            printf ("Deadline          : %d\n", pok_threads[res].deadline);
-            printf ("Partition         : %d\n", pok_threads[res].partition);
-            printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
+            // printf ("Current thread    : %d\n", res);
+            // printf ("Period            : %d\n", pok_threads[res].period);
+            // printf ("State             : %d\n", pok_threads[res].state);
+            // printf ("Deadline          : %d\n", pok_threads[res].deadline);
+            // printf ("Partition         : %d\n", pok_threads[res].partition);
+            // printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
          mindeadline = pok_threads[res].deadline;
          mintno = res;
       }      
@@ -527,7 +530,7 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
    }
    if (mindeadline == 1 << 30)
    {
-      printf("idle\n");
+      //printf("idle\n");
       return IDLE_THREAD;
    }
    else
@@ -536,13 +539,76 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
       return mintno;
    }
 }
+#endif /* POK_NEEDS_SCHED_EDF */
 
+#ifdef POK_NEEDS_SCHED_FIFO
 //TODO
 //uint32_t pok_sched_part_fifo(const uint32_t __attribute__((unused)) index_low, const uint32_t __attribute__((unused)) index_high, const uint32_t __attribute__((unused)) prev_thread, const uint32_t __attribute__((unused)) current_thread)
+/*uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
+{
+   uint32_t res;
+   res = index_low;
+   //printf("fifo is called, POK_STATE_RUNNABLE=%d\n",POK_STATE_RUNNABLE);
+   uint64_t minwakeup = 1 << 30;
+   uint32_t mintno = current_thread;   
+   while (res <= index_high)
+   {
+      printf("thread %d wakeup is %d\n",res,pok_threads[res].wakeup_time);
+      if (res!=IDLE_THREAD && pok_threads[res].wakeup_time < mindeadline && pok_threads[res].state == POK_STATE_RUNNABLE)
+      {
+            // printf ("Current thread    : %d\n", res);
+            // printf ("Period            : %d\n", pok_threads[res].period);
+            // printf ("State             : %d\n", pok_threads[res].state);
+            // printf ("Deadline          : %d\n", pok_threads[res].deadline);
+            // printf ("Partition         : %d\n", pok_threads[res].partition);
+            // printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
+         minwakeup = pok_threads[res].wakeup_time;
+         mintno = res;
+      }      
+      res++;
+   }
+   if (minwakeup == 1 << 30)
+   {
+      //printf("idle\n");
+      return IDLE_THREAD;
+   }
+   else
+   {
+      printf("we choose thread %d\n",mintno);
+      return mintno;
+   }
+}
+*/
+//FIFO
 uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
 {
-   return 0;
+   uint32_t res;
+   uint32_t from;
+   //printf("fifo is called, POK_STATE_RUNNABLE=%d\n",POK_STATE_RUNNABLE);
+   from = res;
+   do
+   {
+      res++;
+      if (res > index_high)
+      {
+         res = index_low;
+      }
+   } while ((res != from) && (pok_threads[res].state != POK_STATE_RUNNABLE));
+
+   if ((res == from) && (pok_threads[res].state != POK_STATE_RUNNABLE))
+   {
+      res = IDLE_THREAD;
+   }
+   // printf ("Current thread    : %d\n", res);
+   // printf ("Period            : %d\n", pok_threads[res].period);
+   // printf ("State             : %d\n", pok_threads[res].state);
+   // printf ("Deadline          : %d\n", pok_threads[res].deadline);
+   // printf ("Partition         : %d\n", pok_threads[res].partition);
+   // printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
+   return res;
 }
+#endif /* POK_NEEDS_SCHED_FIFO */
+
 
 #if defined(POK_NEEDS_LOCKOBJECTS) || defined(POK_NEEDS_PORTS_QUEUEING) || defined(POK_NEEDS_PORTS_SAMPLING)
 void pok_sched_unlock_thread(const uint32_t thread_id)

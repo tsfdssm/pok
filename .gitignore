@@ -1,0 +1,12 @@
+
+
+pok.code-workspace
+
+.vscode/
+
+*.o
+
+*.lo
+
+*.depend.mk
+

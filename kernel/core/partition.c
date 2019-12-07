@@ -63,7 +63,9 @@ void pok_partition_setup_scheduler(const uint8_t pid)
       pok_partitions[pid].sched_func = &pok_sched_part_rms;
       break;
 #endif
+
 //TODO set sched func pointer
+//edf
 #ifdef POK_NEEDS_SCHED_EDF
    case POK_SCHED_EDF:
       printf("sched edf is set\n");
@@ -71,6 +73,21 @@ void pok_partition_setup_scheduler(const uint8_t pid)
       break;
 #endif
 
+//fifo
+#ifdef POK_NEEDS_SCHED_FIFO
+   case POK_SCHED_FIFO:
+      printf("sched fifo is set\n");
+      pok_partitions[pid].sched_func = &pok_sched_part_fifo;
+      break;
+#endif
+
+//static
+#ifdef POK_NEEDS_SCHED_STATIC
+   case POK_SCHED_STATIC:
+      printf("sched static is set\n");
+      pok_partitions[pid].sched_func = &pok_sched_part_static;
+      break;
+#endif
       /*
              * Default scheduling algorithm is Round Robin.
              * Yes, it sucks

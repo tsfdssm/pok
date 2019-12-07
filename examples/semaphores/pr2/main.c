@@ -32,6 +32,7 @@ int main ()
   tattr.entry = pinger_job;
   tattr.deadline = 1;
 
+
   ret = pok_thread_create(&tid , &tattr);
   printf ("[P2] thread create returns=%d\n", ret);
 
