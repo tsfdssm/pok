@@ -17,40 +17,59 @@
 
 #include <libc/stdio.h>
 #include <core/thread.h>
-#include <core/semaphore.h>
+//#include <core/semaphore.h>
 #include <types.h>
+#include <core/time.h>
 
 extern uint8_t sid;
 uint8_t val;
 
+extern pok_thread_attr_t * tattr;
+
+//pok_time_t job1_period=5
+
+//period=run_time+sleep_time
+pok_time_t job1_run_time=2;//s
+pok_time_t job1_sleep_time=3;
 void* pinger_job ()
 {
-   pok_ret_t ret;
+   pok_time_t time=0;
    while (1)
    {
-      printf ("P1T1: I will signal semaphores\n");
-      ret = pok_sem_signal (sid);
-      printf ("P1T1: pok_sem_signal, ret=%d\n", ret);
-      pok_thread_sleep (2000000);
+      pok_time_get(&time);
+      printf ("P1T1:thread 1 begin,begin time:\t%u\n",time>>30);
+
+      //tattr->deadline=time+job1_run_time<<30+job1_sleep_time<<20;
+      while(1)
+      {
+         pok_time_t tmp=0;
+         pok_time_get(&tmp);
+         if(tmp>=time+(job1_run_time<<30))break;//ns,
+      }
+      pok_time_get(&time);
+      printf ("P1T1:thread 1 end,end time:\t%u\n",time>>30);
+      pok_thread_sleep (job1_sleep_time<<20);  ///us,pok_time_gettick
    }
 }
 
+//pok_time_t job2_period=5;
+pok_time_t job2_run_time=1;
+pok_time_t job2_sleep_time=4;
 void* pinger_job2 ()
 {
-   pok_ret_t ret;
+   pok_time_t time=0;
    while (1)
    {
-      pok_time_t begin=0,end=0;
-      pok_time_get(begin);
-      printf ("P1T2: I will wait for the semaphores\n,time:%lld",begin);
-      ret = pok_sem_wait (sid, 0);
-      printf ("P1T2: pok_sem_wait, ret=%d\n", ret);
-      ret = pok_sem_wait (sid, 0);
-
-      pok_time_get(end);
-      printf ("P1T2: pok_sem_wait, ret=%d\n,time:%lld",ret,end);
- 
-
-      pok_thread_sleep (2000000);
+      pok_time_get(&time);
+      printf ("P1T2:thread 2 begin,begin time:\t%u\n",time>>30);
+      while(1)
+      {
+         pok_time_t tmp=0;
+         pok_time_get(&tmp);
+         if(tmp>=time+(job2_run_time<<30))break;
+      }
+      pok_time_get(&time);
+      printf ("P1T2:thread 2 end,end time:\t%u\n",time>>30);
+      pok_thread_sleep (job2_sleep_time<<20);  
    }
 }

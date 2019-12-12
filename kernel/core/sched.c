@@ -514,15 +514,15 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
 
    while (res <= index_high)
    {
-      printf("thread %d ddl is %d\n",res,pok_threads[res].deadline);
+      //printf("thread %d ddl is %d\n",res,pok_threads[res].deadline);
       if (res!=IDLE_THREAD && pok_threads[res].deadline < mindeadline && pok_threads[res].state == POK_STATE_RUNNABLE)
       {
-            // printf ("Current thread    : %d\n", res);
-            // printf ("Period            : %d\n", pok_threads[res].period);
-            // printf ("State             : %d\n", pok_threads[res].state);
-            // printf ("Deadline          : %d\n", pok_threads[res].deadline);
-            // printf ("Partition         : %d\n", pok_threads[res].partition);
-            // printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
+             //printf ("Current thread    : %d\n", res);
+             //printf ("Period            : %d\n", pok_threads[res].period);
+             //printf ("State             : %d\n", pok_threads[res].state);
+             //printf ("Deadline          : %d\n", pok_threads[res].deadline);
+             //printf ("Partition         : %d\n", pok_threads[res].partition);
+             //printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
          mindeadline = pok_threads[res].deadline;
          mintno = res;
       }      
@@ -535,7 +535,7 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
    }
    else
    {
-      printf("we choose thread %d\n",mintno);
+      //printf("we choose thread %d\n",mintno);
       return mintno;
    }
 }
@@ -544,17 +544,18 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
 #ifdef POK_NEEDS_SCHED_FIFO
 //TODO
 //uint32_t pok_sched_part_fifo(const uint32_t __attribute__((unused)) index_low, const uint32_t __attribute__((unused)) index_high, const uint32_t __attribute__((unused)) prev_thread, const uint32_t __attribute__((unused)) current_thread)
-/*uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
+
+uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
 {
    uint32_t res;
    res = index_low;
    //printf("fifo is called, POK_STATE_RUNNABLE=%d\n",POK_STATE_RUNNABLE);
-   uint64_t minwakeup = 1 << 30;
+   uint64_t minwakeup = __UINT64_MAX__;
    uint32_t mintno = current_thread;   
    while (res <= index_high)
    {
-      printf("thread %d wakeup is %d\n",res,pok_threads[res].wakeup_time);
-      if (res!=IDLE_THREAD && pok_threads[res].wakeup_time < mindeadline && pok_threads[res].state == POK_STATE_RUNNABLE)
+      //printf("thread %d wakeup is %d\n",res,pok_threads[res].wakeup_time);
+      if (res!=IDLE_THREAD && pok_threads[res].wakeup_time < minwakeup && pok_threads[res].state == POK_STATE_RUNNABLE)
       {
             // printf ("Current thread    : %d\n", res);
             // printf ("Period            : %d\n", pok_threads[res].period);
@@ -567,20 +568,20 @@ uint32_t pok_sched_part_edf(const uint32_t index_low, const uint32_t index_high,
       }      
       res++;
    }
-   if (minwakeup == 1 << 30)
+   if (minwakeup == __UINT64_MAX__)
    {
       //printf("idle\n");
       return IDLE_THREAD;
    }
    else
    {
-      printf("we choose thread %d\n",mintno);
+      //printf("we choose thread %d\n",mintno);
       return mintno;
    }
 }
-*/
+
 //FIFO
-uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
+/*uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_high, const uint32_t prev_thread, const uint32_t  current_thread)
 {
    uint32_t res;
    uint32_t from;
@@ -607,6 +608,7 @@ uint32_t pok_sched_part_fifo(const uint32_t  index_low, const uint32_t  index_hi
    // printf ("Wakeup_time       : %d\n", pok_threads[res].wakeup_time);
    return res;
 }
+*/
 #endif /* POK_NEEDS_SCHED_FIFO */
 
 

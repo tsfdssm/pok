@@ -25,4 +25,6 @@
 
 #define POK_NEEDS_LIBC_STDLIB 1
 
+#define POK_NEEDS_FUNCTION_TIME_GET 1
+
 #endif

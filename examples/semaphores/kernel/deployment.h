@@ -31,6 +31,7 @@
 //TODO add a marco to enable edf
 #define POK_NEEDS_SCHED_EDF 1
 //#define POK_NEEDS_SCHED_FIFO 1
+#define POK_NEEDS_GETTICK
 
 //TODO setup scheduler of wach partition
 #define POK_CONFIG_PARTITIONS_SCHEDULER {POK_SCHED_EDF,POK_SCHED_EDF}
@@ -45,13 +46,10 @@
 #define POK_CONFIG_PROGRAM_NAME {"pr1/pr1.elf", "pr2/pr2.elf"};
 
 //the size of each slot
-#define POK_CONFIG_SCHEDULING_SLOTS                    \
-   {                                                   \
-      6000000, 6000000, 6000000, 6000000 \
-   }
+#define POK_CONFIG_SCHEDULING_SLOTS {600000, 600000, 600000, 600000}
 
 //time when scheduling slots are repeated
-#define POK_CONFIG_SCHEDULING_MAJOR_FRAME 24000000
+#define POK_CONFIG_SCHEDULING_MAJOR_FRAME 2400000
 //specified which partition is scheduling at which slot
 #define POK_CONFIG_SCHEDULING_SLOTS_ALLOCATION \
    {                                           \

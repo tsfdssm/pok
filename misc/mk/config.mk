@@ -1,12 +1,12 @@
 .SILENT:
 
 AR_x86=/usr/bin/ar
-AWK=/usr/bin/awk
+AWK=/usr/bin/gawk
 CAT=/usr/bin/cat
 CC_x86=/usr/bin/gcc
 CD=cd
-#CONFIG_CFLAGS=-W -Wall -g -m32
 CONFIG_CFLAGS=-W -g -m32
+#CONFIG_CFLAGS=-W -Wall -g -m32
 CONFIG_LDFLAGS=--warn-common
 CONFIG_QEMU_x86= -fda grub-boot-only.img 
 COPY=/usr/bin/cp
